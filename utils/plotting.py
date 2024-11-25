@@ -39,6 +39,12 @@ class DataVisualiser:
         plt.tight_layout()
         plt.show()
 
+    def _plot_categorical(self, column: str) -> None:
+        fig, ax = plt.subplots(figsize=DEFAULT_FIGSIZE)
+        sns.countplot(data=self.data, x=column, ax=ax)
+        self._customize_plot(ax, f"Count of {column}", column, "Frequency", rotation=90)
+        plt.show()
+
     def plot(self, column: str) -> None:
         if not self._column_exists(column):
             return
@@ -47,3 +53,5 @@ class DataVisualiser:
 
         if pd.api.types.is_numeric_dtype(col_dtype):
             self._plot_numerical(column)
+        elif isinstance(col_dtype, pd.CategoricalDtype) or pd.api.types.is_object_dtype(col_dtype):
+            self._plot_categorical(column)
