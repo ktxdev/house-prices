@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 
 
 def handle_rare_categories(data: pd.DataFrame) -> pd.DataFrame:
@@ -24,4 +24,11 @@ def encode_categories(data: pd.DataFrame) -> pd.DataFrame:
     encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(['MSZoning']))
     # Concatenate encoded_df to data
     data = pd.concat([data, encoded_df], axis=1).drop(columns=['MSZoning'])
+    return data
+
+def normalize_numerics(data: pd.DataFrame) -> pd.DataFrame:
+    # Make copy of dataframe
+    data = data.copy()
+    scaler = MinMaxScaler()
+    data['LotFrontage'] = scaler.fit_transform(data[['LotFrontage']])
     return data

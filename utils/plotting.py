@@ -53,6 +53,15 @@ class DataVisualizer:
         plt.grid(axis='y', linestyle='--', alpha=0.7)
         plt.show()
 
+    def _plot_numerical_vs_numerical(self, numeric_col1: str, numeric_col2: str) -> None:
+        plt.figure(figsize=DEFAULT_FIGSIZE)
+        sns.scatterplot(data=self.data, x=numeric_col1, y=numeric_col2)
+        plt.title(f"{numeric_col1} vs. {numeric_col2}")
+        plt.xlabel(numeric_col1)
+        plt.ylabel(numeric_col2)
+        plt.grid(True, linestyle="--", alpha=0.7)
+        plt.show()
+
     def _is_categorical(self, column: str) -> bool:
         col_dtype = self.data[column].dtype
         return isinstance(col_dtype, pd.CategoricalDtype) or pd.api.types.is_object_dtype(col_dtype)
@@ -70,6 +79,8 @@ class DataVisualizer:
                 self._plot_numerical_vs_categorical(column1, column2)
             elif self._is_categorical(column1) and self._is_numerical(column2):
                 self._plot_numerical_vs_categorical(column2, column1)
+            elif self._is_numerical(column1) and self._is_numerical(column2):
+                self._plot_numerical_vs_numerical(column1, column2)
         else:
             if self._is_numerical(column1):
                 self._plot_numerical(column1)
