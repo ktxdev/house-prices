@@ -29,6 +29,8 @@ def encode_categories(data: pd.DataFrame) -> pd.DataFrame:
 def normalize_numerics(data: pd.DataFrame) -> pd.DataFrame:
     # Make copy of dataframe
     data = data.copy()
+    # Scaling features
+    columns_to_scale = ['LotFrontage', 'LotArea']
     scaler = MinMaxScaler()
-    data['LotFrontage'] = scaler.fit_transform(data[['LotFrontage']])
+    data[columns_to_scale] = scaler.fit_transform(data[columns_to_scale])
     return data

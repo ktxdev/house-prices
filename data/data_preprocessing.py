@@ -28,7 +28,10 @@ def handle_outliers(data: pd.DataFrame) -> pd.DataFrame:
     # Copy dataframe
     data = data.copy()
     # Cap extreme values
-    upper_limit = data['LotFrontage'].quantile(0.99)
-    lower_limit = data['LotFrontage'].quantile(0.01)
-    data['LotFrontage'] = data['LotFrontage'].clip(lower=lower_limit, upper=upper_limit)
+    columns_to_cap = ['LotFrontage', 'LotArea']
+    # Compute the lower (5th percentile) and upper (95th percentile) bounds
+    lower_bounds = data[columns_to_cap].quantile(0.05)
+    upper_bounds = data[columns_to_cap].quantile(0.95)
+    # Use clip to cap the values within the specified range
+    data[columns_to_cap] = data[columns_to_cap].clip(lower=lower_bounds, upper=upper_bounds, axis=1)
     return data
