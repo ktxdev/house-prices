@@ -8,11 +8,17 @@ SHOW_LOGS: bool = False
 
 logger = get_logger(__name__)
 
+DATASET_DIR = data_path = os.path.abspath(os.path.join('..', 'datasets'))
 
 def load_data(data_filename: str) -> pd.DataFrame:
-    data_path = os.path.abspath(os.path.join('..', 'datasets', data_filename))
+    data_path = os.path.join(DATASET_DIR, data_filename)
     log_message(f"Loading datasets from: {data_path}", logger, SHOW_LOGS)
     return pd.read_csv(data_path)
+
+def save_data(data_filename: str, data: pd.DataFrame) -> None:
+    data_path = os.path.join(DATASET_DIR, data_filename)
+    log_message(f"Saving datasets to: {data_path}", logger, SHOW_LOGS)
+    data.to_csv(data_path, index=False)
 
 
 def check_and_print_missing_value_counts(data: pd.DataFrame, column_name: str) -> None:
