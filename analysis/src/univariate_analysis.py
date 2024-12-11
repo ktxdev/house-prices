@@ -11,7 +11,7 @@ class UnivariateAnalysisStrategy(ABC):
         """
         Performs univariate analysis on a specific feature in the dataframe.
 
-        :param
+        :param:
             df (pd.DataFrame): The dataframe to use for univariate analysis.
             feature (str): The feature to analyze.
         :return
@@ -24,7 +24,7 @@ class NumericUnivariateAnalysis(UnivariateAnalysisStrategy):
     def analyze(self, df: pd.DataFrame, feature: str) -> None:
         """
         Plots the distribution of a numerical feature using a histogram, KDE and boxplot
-        :param
+        :param:
             df (pd.DataFrame): The dataframe to use for univariate analysis.
             feature (str): The feature to analyze.
         :return:
@@ -53,7 +53,7 @@ class CategoricalUnivariateAnalysis(UnivariateAnalysisStrategy):
     def analyze(self, df: pd.DataFrame, feature: str) -> None:
         """
         Plots the distribution of a categorical feature using a countplot
-        :param
+        :param:
             df(pd.DataFrame): The dataframe to use for univariate analysis.
             feature (str): The feature to analyze.
         :return:
@@ -74,7 +74,7 @@ class UnivariateAnalyzer:
     def __init__(self, strategy: UnivariateAnalysisStrategy):
         """
         Initializes a univariate analyzer with a specific strategy.
-        :param
+        :param:
             strategy (UnivariateAnalysisStrategy): The strategy to use.
         """
         self.strategy = strategy
@@ -82,7 +82,7 @@ class UnivariateAnalyzer:
     def set_strategy(self, strategy: UnivariateAnalysisStrategy):
         """
         Sets the strategy to use.
-        :param
+        :param:
             strategy (UnivariateAnalysisStrategy): The strategy to use.
         """
         self.strategy = strategy
@@ -91,7 +91,7 @@ class UnivariateAnalyzer:
     def analyze(self, df: pd.DataFrame, feature: str) -> None:
         """
         Performs univariate analysis on a specific feature in the dataframe.
-        :param
+        :param:
             df (pd.DataFrame): The dataframe to use for univariate analysis.
             feature (str): The feature to analyze.
         """
