@@ -29,3 +29,12 @@ def check_and_print_missing_value_counts(data: pd.DataFrame, column_name: str) -
     # Calculate missing values percentage
     missing_values_percentage = round(missing_values_rows.mean() * 100, 2)
     print(f"Missing values count: {missing_values_count}\nMissing values percentage: {missing_values_percentage}%")
+
+import os
+from dotenv import load_dotenv
+
+def get_env_variable(var_name: str) -> str:
+    dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+    load_dotenv(dotenv_path)
+
+    return os.getenv(var_name)

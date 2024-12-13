@@ -1,6 +1,9 @@
+import os
 import pandas as pd
 
 from abc import ABC, abstractmethod
+
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class DataIngestor(ABC):
@@ -27,16 +30,14 @@ class DataIngestorFactory:
             raise ValueError(f'No data ingestor available for file extension {file_extension}')
 
 
-if __name__ == '__main__':
-    import os
+class DataIngestor(BaseEstimator, TransformerMixin):
+    def __init__(self, file_path: str):
+        self._file_path = file_path
+        self._file_extension = os.path.splitext(file_path)[1]
 
-    # Specify file path
-    file_path = '/Users/ktxdev/Developer/house-prices/datasets/train.csv'
-    # Determine the file extension
-    file_extension = os.path.splitext(file_path)[1]
-    # Get the appropriate data ingestor
-    data_ingestor = DataIngestorFactory.get_data_ingestor(file_extension)
-    # Ingest the data and load it into a dataframe
-    df = data_ingestor.ingest(file_path)
-    # Show top records
-    print(df.head())
+    def fit(self, X=None, y=None):
+        return self
+
+    def transform(self, X=None):
+        data_ingestor_factory = DataIngestorFactory.get_data_ingestor(self._file_extension)
+        return data_ingestor_factory.ingest(self._file_path)
