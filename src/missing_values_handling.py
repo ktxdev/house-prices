@@ -35,7 +35,7 @@ class DropMissingValuesStrategy(MissingValuesHandlingStrategy):
         :return:
             pd.DataFrame: The dataframe with missing values handled for the provided features.
         """
-        return df.drop(columns=self._features)
+        return df.drop(columns=self._features, errors='ignore')
 
 
 class FillMissingValuesStrategy(MissingValuesHandlingStrategy):
@@ -90,3 +90,28 @@ class MissingValuesHandler:
     def get_feature_names_out(self, input_features=None):
         # If input_features are provided, return them unchanged
         return input_features if input_features is not None else self._feature_names
+
+if __name__ == "__main__":
+    import os
+
+    from src.ingest_data import DataIngestorFactory
+
+    file_path = "/Users/ktxdev/Developer/house-prices/data/train.csv"
+    file_extension = os.path.splitext(file_path)[1]
+
+    data_ingestor = DataIngestorFactory().get_data_ingestor(file_extension)
+    df = data_ingestor.ingest(file_path)
+
+    features_to_drop = ['MiscFeature', 'Alley', 'PoolQC', 'Fence']
+
+    # Initialize strategy
+    drop_strategy = DropMissingValuesStrategy(features=features_to_drop)
+
+    # Handle missing values (drop specified features)
+    # df_cleaned = drop_strategy.handle_missing_values(df)
+
+    df_cleaned = df.drop(columns=features_to_drop)
+
+    pd.set_option('display.max_columns', None)
+
+    print(df_cleaned.head())

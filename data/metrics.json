@@ -1,0 +1,20 @@
+{
+    "LinearRegression_v2.0": {
+        "Mean Squared Error": 4267776201.82,
+        "Root Mean Squared Error": 65328.22,
+        "R-squared": 0.44,
+        "Best Params": {
+            "model__fit_intercept": true,
+            "model__n_jobs": 1
+        }
+    },
+    "LinearRegression_v1.0": {
+        "Mean Squared Error": 4267776201.8231,
+        "Root Mean Squared Error": 65328.219,
+        "R-squared": 0.4436,
+        "Best Params": {
+            "model__fit_intercept": true,
+            "model__n_jobs": 1
+        }
+    }
+}

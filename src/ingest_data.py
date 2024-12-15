@@ -1,9 +1,6 @@
-import os
-import pandas as pd
-
 from abc import ABC, abstractmethod
 
-from sklearn.base import BaseEstimator, TransformerMixin
+import pandas as pd
 
 
 class DataIngestor(ABC):
