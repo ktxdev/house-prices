@@ -2,22 +2,19 @@ import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
-from src.missing_values_handling import MissingValuesHandler, FillMissingValuesStrategy
+from src.missing_values_handling import MissingValuesHandler, FillMissingValuesStrategy, DropMissingValuesStrategy
 
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
 # Define the column groups
 median_columns = ['LotFrontage']
-constant_no_alley = ['Alley']
-constant_none = ['MasVnrType', 'MiscFeature']
+constant_none = ['MasVnrType']
 constant_zero = ['MasVnrArea', 'GarageYrBlt']
 constant_no_basement = ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']
 most_frequent_columns = ['Electrical']
 constant_no_fireplace = ['FireplaceQu']
 constant_no_garage = ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']
-constant_no_pool = ['PoolQC']
-constant_no_fence = ['Fence']
 
 # Create handlers for each group of columns
 missing_value_transformers = [
@@ -26,12 +23,6 @@ missing_value_transformers = [
         ('scaler', StandardScaler())
     ]),
      median_columns),
-    ('constant_no_alley', Pipeline(steps=[
-        ('imputer', MissingValuesHandler(
-            FillMissingValuesStrategy(constant_no_alley, method="constant", fill_value='No Alley'))),
-        ('encoder', OneHotEncoder(handle_unknown='ignore'))
-    ]),
-     constant_no_alley),
     ('constant_none',
      Pipeline(steps=[
          ('imputer',
@@ -67,17 +58,6 @@ missing_value_transformers = [
         ('encoder', OneHotEncoder(handle_unknown='ignore'))
     ]),
      constant_no_garage),
-    ('constant_no_pool', Pipeline(steps=[
-        ('imputer', MissingValuesHandler(
-            FillMissingValuesStrategy(constant_no_pool, method="constant", fill_value='No Pool'))),
-        ('encoder', OneHotEncoder(handle_unknown='ignore'))
-    ]), constant_no_pool),
-    ('constant_no_fence', Pipeline(steps=[
-        ('imputer', MissingValuesHandler(
-            FillMissingValuesStrategy(constant_no_fence, method="constant", fill_value='No Fence'))),
-        ('encoder', OneHotEncoder(handle_unknown='ignore'))
-    ]),
-     constant_no_fence),
 ]
 
 numerical_features = ['MSSubClass', 'LotArea', 'OverallQual',

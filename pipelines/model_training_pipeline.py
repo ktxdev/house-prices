@@ -54,4 +54,4 @@ if __name__ == '__main__':
 
     model, metrics = model_trainer.train_and_evaluate_model(X, y_scaled)
 
-    log_experiment("LinearRegression_v1.0", metrics)
+    log_experiment("LinearRegression_v2.0", "Model with a large count of missing values removed", metrics)
