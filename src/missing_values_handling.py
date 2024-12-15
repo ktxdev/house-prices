@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import List, Any
 
 import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class MissingValuesHandlingStrategy(ABC):
@@ -40,54 +39,54 @@ class DropMissingValuesStrategy(MissingValuesHandlingStrategy):
 
 
 class FillMissingValuesStrategy(MissingValuesHandlingStrategy):
-    def __init__(self, features: List[str], method: str = "median", grouping_feature: str = None,
-                 fill_value: Any = None):
+    def __init__(self, features: List[str], method: str = "median", fill_value: Any = None):
         self._features = features
         self._method = method
-        self._grouping_feature = grouping_feature
         self._fill_value = fill_value
-
-    def _get_fill_function(self):
-        if self._method == "median":
-            return lambda x: x.median()
-        elif self._method == "mean":
-            return lambda x: x.mean()
-        elif self._method == "most_frequent":
-            return lambda x: x.mode().iloc[0] if not x.mode().empty else None
-        elif self._method == "constant":
-            if self._fill_value is None:
-                raise ValueError("The fill_value must be provided when method 'constant' is used.")
-            return lambda x: x.fillna(self._fill_value)
-        else:
-            raise ValueError(f"Unsupported method: {self._method}.")
 
     def handle_missing_values(self, df: pd.DataFrame) -> pd.DataFrame:
         df_clean = df.copy()
-        # Get the fill action
-        fill_function = self._get_fill_function()
-        for feature in self._features:
-            df_clean[feature] = fill_function(df_clean[feature])
+
+        if self._method == "median":
+            df_clean[self._features] = df_clean[self._features].fillna(df_clean[self._features].median())
+        elif self._method == "mean":
+            df_clean[self._features] = df_clean[self._features].fillna(df_clean[self._features].mean())
+        elif self._method == "most_frequent":
+            df_clean[self._features] = df_clean[self._features].fillna(df_clean[self._features].mode().iloc[0])
+        elif self._method == "constant":
+            if self._fill_value is None:
+                raise ValueError("The fill_value must be provided when method 'constant' is used.")
+            df_clean[self._features] = df_clean[self._features].fillna(self._fill_value)
+        else:
+            raise ValueError(f"Unsupported method: {self._method}.")
+
         return df_clean
 
 
-class MissingValuesHandler(BaseEstimator, TransformerMixin):
+class MissingValuesHandler:
     def __init__(self, strategy: MissingValuesHandlingStrategy):
         self._strategy = strategy
-        self.feature_names_in_ = []
 
-    @property
-    def strategy(self):
-        return self._strategy
+    def fit(self, X, y=None):
+        return self  # No fitting required for missing value handling
 
-    def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        self.feature_names_in_ = X.columns
+    def transform(self, X):
+        self._feature_names = X.columns
+        return self._strategy.handle_missing_values(X)
+
+    def set_strategy(self, strategy: MissingValuesHandlingStrategy):
+        self._strategy = strategy
+
+    def get_params(self, deep=True):
+        # Return a dictionary of parameters
+        return {"strategy": self._strategy}
+
+    def set_params(self, **params):
+        # Set parameters dynamically
+        for key, value in params.items():
+            setattr(self, key, value)
         return self
 
-    def transform(self, X: pd.DataFrame):
-        transformed_df = self._strategy.handle_missing_values(X)
-        return transformed_df.to_numpy()
-
     def get_feature_names_out(self, input_features=None):
-        if input_features is not None:
-            return input_features
-        return self.feature_names_in_
+        # If input_features are provided, return them unchanged
+        return input_features if input_features is not None else self._feature_names

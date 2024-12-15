@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 from src.data_preprocessing import preprocessor
 
@@ -35,10 +36,10 @@ class LinearRegressionStrategy(ModelBuildingStrategy):
         :return:
             Pipeline: A pipeline with a trained regression model instance
         """
-        if not isinstance(X_train, pd.DataFrame):
-            raise TypeError("X_train must be a pandas.DataFrame")
-        elif not isinstance(y_train, pd.Series):
-            raise TypeError("y_train must be a pandas.Series")
+        # if not isinstance(X_train, pd.DataFrame):
+        #     raise TypeError("X_train must be a pandas.DataFrame")
+        # elif not isinstance(y_train, pd.Series):
+        #     raise TypeError("y_train must be a pandas.Series")
 
         logger.info("Initializing regression model")
 
@@ -89,7 +90,7 @@ class ModelBuilder:
 if __name__ == '__main__':
     import os
 
-    from sklearn.metrics import mean_squared_error
+    from sklearn.metrics import root_mean_squared_error, r2_score
     from sklearn.model_selection import train_test_split
 
     from src.ingest_data import DataIngestorFactory
@@ -105,15 +106,15 @@ if __name__ == '__main__':
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+    scaler = StandardScaler()
+    y_train_scaled = scaler.fit_transform(y_train.values.reshape(-1, 1))
 
     model_builder = ModelBuilder(LinearRegressionStrategy())
-    model = model_builder.build_model(X_train, y_train)
+    model = model_builder.build_model(X_train, y_train_scaled)
 
-    y_pred = model.predict(X_test)
-
-    print(y[:5])
-    print("y_train:", y_train[:5])
-    print("y_test:", y_test[:5])
+    y_pred_scaled = model.predict(X_test)
+    y_pred = scaler.inverse_transform(y_pred_scaled.reshape(-1, 1))
 
     print("Sample predictions:", y_pred[:10])
-    print(mean_squared_error(y_test, y_pred))
+    print(root_mean_squared_error(y_test, y_pred))
+    print(r2_score(y_test, y_pred))
