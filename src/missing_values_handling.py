@@ -1,10 +1,7 @@
-from pyexpat import features
+from abc import ABC, abstractmethod
+from typing import List, Any
 
 import pandas as pd
-
-from typing import List, Any
-from abc import ABC, abstractmethod
-
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
@@ -69,10 +66,7 @@ class FillMissingValuesStrategy(MissingValuesHandlingStrategy):
         # Get the fill action
         fill_function = self._get_fill_function()
         for feature in self._features:
-            if self._grouping_feature:
-                df_clean[feature] = df_clean.groupby(self._grouping_feature)[feature].apply(fill_function)
-            else:
-                df_clean[feature] = fill_function(df_clean[feature])
+            df_clean[feature] = fill_function(df_clean[feature])
         return df_clean
 
 
@@ -90,7 +84,8 @@ class MissingValuesHandler(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X: pd.DataFrame):
-        return self._strategy.handle_missing_values(X)
+        transformed_df = self._strategy.handle_missing_values(X)
+        return transformed_df.to_numpy()
 
     def get_feature_names_out(self, input_features=None):
         if input_features is not None:
