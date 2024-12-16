@@ -38,5 +38,29 @@
             "model__fit_intercept": false,
             "model__n_jobs": 1
         }
+    },
+    "RandomForest_v1.0": {
+        "description": "Model with outliers capped using iqr",
+        "Mean Squared Error": 840673700.3735,
+        "Root Mean Squared Error": 28994.3736,
+        "R-squared": 0.8904,
+        "Best Params": {
+            "model__max_depth": 10,
+            "model__min_samples_leaf": 1,
+            "model__min_samples_split": 2,
+            "model__n_estimators": 200
+        }
+    },
+    "RandomForest_v2.0": {
+        "description": "Model with outliers capped using zscore",
+        "Mean Squared Error": 925333395.1423,
+        "Root Mean Squared Error": 30419.2931,
+        "R-squared": 0.8794,
+        "Best Params": {
+            "model__max_depth": null,
+            "model__min_samples_leaf": 2,
+            "model__min_samples_split": 2,
+            "model__n_estimators": 200
+        }
     }
 }

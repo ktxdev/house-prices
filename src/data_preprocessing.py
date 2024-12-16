@@ -18,7 +18,7 @@ constant_no_garage = ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']
 missing_value_transformers = [
     ('median_imputer', Pipeline(steps=[
         ('imputer', MissingValuesHandler(FillMissingValuesStrategy(median_columns, method="median"))),
-        ('outlier_handler', OutlierHandlerCap(method='iqr', threshold=1.5)),
+        ('outlier_handler', OutlierHandlerCap(method='zscore', threshold=3)),
         ('scaler', StandardScaler())
     ]),
      median_columns),
@@ -31,7 +31,7 @@ missing_value_transformers = [
      constant_none),
     ('constant_zero', Pipeline(steps=[
         ('imputer', MissingValuesHandler(FillMissingValuesStrategy(constant_zero, method="constant", fill_value=0))),
-        ('outlier_handler', OutlierHandlerCap(method='iqr', threshold=1.5)),
+        ('outlier_handler', OutlierHandlerCap(method='zscore', threshold=3)),
         ('scaler', StandardScaler())
     ]),
      constant_zero),
@@ -80,7 +80,7 @@ preprocessor = ColumnTransformer(
     transformers=[
         *missing_value_transformers,  # Missing value handling
         ('scaler', Pipeline(steps=[
-            ('outlier_handler', OutlierHandlerCap(method='iqr', threshold=1.5)),
+            ('outlier_handler', OutlierHandlerCap(method='zscore', threshold=3)),
             ('scaler', StandardScaler())
         ]), numerical_features),  # Scaling for numerical columns
         ('encoder', OneHotEncoder(handle_unknown='ignore'), categorical_features),  # One-hot encoding
