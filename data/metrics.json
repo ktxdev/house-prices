@@ -18,5 +18,25 @@
             "model__fit_intercept": false,
             "model__n_jobs": 1
         }
+    },
+    "LinearRegression_v3.0": {
+        "description": "Model with outliers capped using zscore",
+        "Mean Squared Error": 1340668618.4142,
+        "Root Mean Squared Error": 36615.1419,
+        "R-squared": 0.8252,
+        "Best Params": {
+            "model__fit_intercept": false,
+            "model__n_jobs": 1
+        }
+    },
+    "LinearRegression_v4.0": {
+        "description": "Model with outliers capped using iqr",
+        "Mean Squared Error": 890370707.4064,
+        "Root Mean Squared Error": 29839.0802,
+        "R-squared": 0.8839,
+        "Best Params": {
+            "model__fit_intercept": false,
+            "model__n_jobs": 1
+        }
     }
 }

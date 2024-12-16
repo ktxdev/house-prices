@@ -31,8 +31,9 @@ if __name__ == '__main__':
     from sklearn.preprocessing import StandardScaler
 
     from src.ingest_data import DataIngestorFactory
-    from pipelines.linear_regression_pipeline import LinearRegressionStrategy
+    from src.outlier_detection import OutlierHandlerCap
     from src.model_evaluation import RegressionPipelineEvaluationStrategy
+    from pipelines.linear_regression_pipeline import LinearRegressionStrategy
 
     file_path = "/Users/ktxdev/Developer/house-prices/data/train.csv"
     file_extension = os.path.splitext(file_path)[1]
@@ -42,6 +43,10 @@ if __name__ == '__main__':
 
     X = data.drop(columns=['Id', 'SalePrice'])
     y = data['SalePrice']
+
+
+    outlier_handler = OutlierHandlerCap(method='iqr', threshold=1.5)
+    y = outlier_handler.transform(y)
 
     scaler = StandardScaler()
     y_scaled = scaler.fit_transform(y.values.reshape(-1, 1))
@@ -54,4 +59,4 @@ if __name__ == '__main__':
 
     model, metrics = model_trainer.train_and_evaluate_model(X, y_scaled)
 
-    log_experiment("LinearRegression_v2.0", "Model with a large count of missing values removed", metrics)
+    log_experiment("LinearRegression_v4.0", "Model with outliers capped using iqr", metrics)
