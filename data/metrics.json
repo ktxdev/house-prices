@@ -86,5 +86,27 @@
             "model__n_estimators": 200,
             "model__subsample": 0.8
         }
+    },
+    "SupportVectorRegression_v1.0": {
+        "description": "Model with outliers capped using iqr",
+        "Mean Squared Error": 1006452483.0012,
+        "Root Mean Squared Error": 31724.6353,
+        "R-squared": 0.8688,
+        "Best Params": {
+            "model__C": 1200,
+            "model__epsilon": 0.1,
+            "model__kernel": "linear"
+        }
+    },
+    "SupportVectorRegression_v2.0": {
+        "description": "Model with outliers capped using zscore",
+        "Mean Squared Error": 1771032956.2752,
+        "Root Mean Squared Error": 42083.6424,
+        "R-squared": 0.7691,
+        "Best Params": {
+            "model__C": 500,
+            "model__epsilon": 0.001,
+            "model__kernel": "linear"
+        }
     }
 }

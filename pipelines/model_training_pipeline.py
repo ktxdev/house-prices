@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 
 from pipelines.gradient_boosting_regression_pipeline import GradientBoostingRegressionStrategy
 from pipelines.random_forest_regression_pipeline import RandomForestRegressionStrategy
+from pipelines.support_vector_regression_pipeline import SupportVectorRegressionStrategy
 from src.model_building import ModelBuilder
 from src.model_evaluation import ModelEvaluator
 from src.experiment_logger import log_experiment
@@ -47,14 +48,13 @@ if __name__ == '__main__':
     X = data.drop(columns=['Id', 'SalePrice'])
     y = data['SalePrice']
 
-
     outlier_handler = OutlierHandlerCap(method='iqr', threshold=1.5)
     y = outlier_handler.transform(y)
 
     scaler = StandardScaler()
     y_scaled = scaler.fit_transform(y.values.reshape(-1, 1))
 
-    model_builder = ModelBuilder(GradientBoostingRegressionStrategy())
+    model_builder = ModelBuilder(SupportVectorRegressionStrategy())
 
     model_evaluator = ModelEvaluator(RegressionPipelineEvaluationStrategy())
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     grid_search, metrics = model_trainer.train_and_evaluate_model(X, y_scaled)
 
-    model_name = "GradientBoosting_v2.0"
+    model_name = "SupportVectorRegression_v1.0"
     log_experiment(model_name, "Model with outliers capped using iqr", metrics)
 
     model_save_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), f"../models/{model_name}.pkl")
