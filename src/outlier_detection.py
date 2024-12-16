@@ -24,6 +24,7 @@ class OutlierHandlerCap(BaseEstimator, TransformerMixin):
         Fit the transformer. In this case, we do not need to fit any parameters,
         but it is required by scikit-learn.
         """
+        self._feature_names = X.columns
         return self
 
     def transform(self, X):
@@ -57,3 +58,7 @@ class OutlierHandlerCap(BaseEstimator, TransformerMixin):
             X_transformed = np.clip(X_transformed, lower_bound, upper_bound)
 
         return X_transformed
+
+    def get_feature_names_out(self, input_features=None):
+        # If input_features are provided, return them unchanged
+        return input_features if input_features is not None else self._feature_names

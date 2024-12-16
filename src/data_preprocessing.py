@@ -8,9 +8,11 @@ from src.outlier_detection import OutlierHandlerCap
 # Define the column groups
 median_columns = ['LotFrontage']
 constant_none = ['MasVnrType']
-constant_zero = ['MasVnrArea', 'GarageYrBlt']
+constant_zero = ['MasVnrArea', 'GarageYrBlt', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath',
+                 'BsmtHalfBath', 'GarageCars', 'GarageArea']
 constant_no_basement = ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2']
-most_frequent_columns = ['Electrical']
+most_frequent_columns = ['Electrical', 'MSZoning', 'Utilities', 'Exterior1st', 'Exterior2nd', 'KitchenQual',
+                         'Functional', 'SaleType']
 constant_no_fireplace = ['FireplaceQu']
 constant_no_garage = ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']
 

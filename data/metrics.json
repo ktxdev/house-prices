@@ -77,9 +77,9 @@
     },
     "GradientBoosting_v2.0": {
         "description": "Model with outliers capped using iqr",
-        "Mean Squared Error": 629001968.5437,
-        "Root Mean Squared Error": 25079.9117,
-        "R-squared": 0.918,
+        "Mean Squared Error": 624210126.0102,
+        "Root Mean Squared Error": 24984.1975,
+        "R-squared": 0.9186,
         "Best Params": {
             "model__learning_rate": 0.1,
             "model__max_depth": 3,
@@ -89,13 +89,14 @@
     },
     "SupportVectorRegression_v1.0": {
         "description": "Model with outliers capped using iqr",
-        "Mean Squared Error": 1006452483.0012,
-        "Root Mean Squared Error": 31724.6353,
-        "R-squared": 0.8688,
+        "Mean Squared Error": 629001968.5437,
+        "Root Mean Squared Error": 25079.9117,
+        "R-squared": 0.918,
         "Best Params": {
-            "model__C": 1200,
-            "model__epsilon": 0.1,
-            "model__kernel": "linear"
+            "model__learning_rate": 0.1,
+            "model__max_depth": 3,
+            "model__n_estimators": 200,
+            "model__subsample": 0.8
         }
     },
     "SupportVectorRegression_v2.0": {

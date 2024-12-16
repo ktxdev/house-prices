@@ -3,6 +3,7 @@ from typing import Dict, Tuple, Any
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 
+from pipelines.gradient_boosting_regression_pipeline import GradientBoostingRegressionStrategy
 from pipelines.support_vector_regression_pipeline import SupportVectorRegressionStrategy
 from src.experiment_logger import log_experiment
 from src.model_building import ModelBuilder
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     scaler = StandardScaler()
     y_scaled = scaler.fit_transform(y.values.reshape(-1, 1))
 
-    model_builder = ModelBuilder(SupportVectorRegressionStrategy())
+    model_builder = ModelBuilder(GradientBoostingRegressionStrategy())
 
     model_evaluator = ModelEvaluator(RegressionPipelineEvaluationStrategy())
 
@@ -59,7 +60,7 @@ if __name__ == '__main__':
 
     grid_search, metrics = model_trainer.train_and_evaluate_model(X, y_scaled)
 
-    model_name = "SupportVectorRegression_v1.0"
+    model_name = "GradientBoosting_v2.0"
     log_experiment(model_name, "Model with outliers capped using iqr", metrics)
 
     models_dir_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../models")
