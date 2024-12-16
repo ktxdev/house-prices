@@ -3,12 +3,10 @@ from typing import Dict, Tuple, Any
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 
-from pipelines.gradient_boosting_regression_pipeline import GradientBoostingRegressionStrategy
-from pipelines.random_forest_regression_pipeline import RandomForestRegressionStrategy
 from pipelines.support_vector_regression_pipeline import SupportVectorRegressionStrategy
+from src.experiment_logger import log_experiment
 from src.model_building import ModelBuilder
 from src.model_evaluation import ModelEvaluator
-from src.experiment_logger import log_experiment
 
 
 class ModelTrainer:
@@ -37,7 +35,6 @@ if __name__ == '__main__':
     from src.ingest_data import DataIngestorFactory
     from src.outlier_detection import OutlierHandlerCap
     from src.model_evaluation import RegressionPipelineEvaluationStrategy
-    from pipelines.linear_regression_pipeline import LinearRegressionStrategy
 
     file_path = "/Users/ktxdev/Developer/house-prices/data/train.csv"
     file_extension = os.path.splitext(file_path)[1]
