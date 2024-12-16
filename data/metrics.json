@@ -62,5 +62,29 @@
             "model__min_samples_split": 2,
             "model__n_estimators": 200
         }
+    },
+    "GradientBoosting_v1.0": {
+        "description": "Model with outliers capped using zscore",
+        "Mean Squared Error": 659917197.9402,
+        "Root Mean Squared Error": 25688.8536,
+        "R-squared": 0.914,
+        "Best Params": {
+            "model__learning_rate": 0.2,
+            "model__max_depth": 3,
+            "model__n_estimators": 100,
+            "model__subsample": 0.8
+        }
+    },
+    "GradientBoosting_v2.0": {
+        "description": "Model with outliers capped using iqr",
+        "Mean Squared Error": 629001968.5437,
+        "Root Mean Squared Error": 25079.9117,
+        "R-squared": 0.918,
+        "Best Params": {
+            "model__learning_rate": 0.1,
+            "model__max_depth": 3,
+            "model__n_estimators": 200,
+            "model__subsample": 0.8
+        }
     }
 }

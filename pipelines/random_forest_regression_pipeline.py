@@ -31,7 +31,8 @@ class RandomForestRegressionStrategy(ModelBuildingStrategy):
         ])
 
         grid_search = GridSearchCV(estimator=pipeline, param_grid=param_grid,
-                                   scoring=make_scorer(rmse_scorer, greater_is_better=False), cv=5, verbose=3)
+                                   scoring=make_scorer(rmse_scorer, greater_is_better=False), n_jobs=-1, cv=5,
+                                   verbose=3)
         logger.info("Training Random Forest Regression model")
         grid_search.fit(X_train, y_train)
 

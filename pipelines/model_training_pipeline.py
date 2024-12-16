@@ -3,6 +3,7 @@ from typing import Dict, Tuple, Any
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 
+from pipelines.gradient_boosting_regression_pipeline import GradientBoostingRegressionStrategy
 from pipelines.random_forest_regression_pipeline import RandomForestRegressionStrategy
 from src.model_building import ModelBuilder
 from src.model_evaluation import ModelEvaluator
@@ -47,13 +48,13 @@ if __name__ == '__main__':
     y = data['SalePrice']
 
 
-    outlier_handler = OutlierHandlerCap(method='zscore', threshold=3)
+    outlier_handler = OutlierHandlerCap(method='iqr', threshold=1.5)
     y = outlier_handler.transform(y)
 
     scaler = StandardScaler()
     y_scaled = scaler.fit_transform(y.values.reshape(-1, 1))
 
-    model_builder = ModelBuilder(RandomForestRegressionStrategy())
+    model_builder = ModelBuilder(GradientBoostingRegressionStrategy())
 
     model_evaluator = ModelEvaluator(RegressionPipelineEvaluationStrategy())
 
@@ -61,8 +62,8 @@ if __name__ == '__main__':
 
     grid_search, metrics = model_trainer.train_and_evaluate_model(X, y_scaled)
 
-    model_name = "RandomForest_v2.0"
-    log_experiment(model_name, "Model with outliers capped using zscore", metrics)
+    model_name = "GradientBoosting_v2.0"
+    log_experiment(model_name, "Model with outliers capped using iqr", metrics)
 
     model_save_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), f"../models/{model_name}.pkl")
     os.makedirs(os.path.dirname(model_save_path), exist_ok=True)

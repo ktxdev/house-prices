@@ -1,7 +1,6 @@
 import logging
-
 import pandas as pd
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
@@ -14,34 +13,27 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 
-class LinearRegressionStrategy(ModelBuildingStrategy):
+class GradientBoostingRegressionStrategy(ModelBuildingStrategy):
     def build_and_train_model(self, X_train: pd.DataFrame, y_train: pd.Series) -> GridSearchCV:
-        """
-        Builds and trains a linear regression model with hyperparameter tuning
+        logger.info("Initializing Gradient Boosting Regression model")
 
-        :param:
-            X_train (pd.DataFrame): The training data features
-            y_train (pd.Series): The training data labels/targets
-        :return:
-            Pipeline: A pipeline with a trained regression model instance
-        """
-
-        logger.info("Initializing regression model")
-
+        # Define the parameter grid
         param_grid = {
-            'model__fit_intercept': [True, False],
-            'model__n_jobs': [1, -1]
+            'model__n_estimators': [50, 100, 200],
+            'model__learning_rate': [0.05, 0.1, 0.2],
+            'model__max_depth': [3, 5, 7],
+            'model__subsample': [0.8, 1.0]
         }
 
         pipeline = Pipeline(steps=[
             ('preprocessor', preprocessor),
-            ('model', LinearRegression())
+            ('model', GradientBoostingRegressor(random_state=42))
         ])
 
         grid_search = GridSearchCV(estimator=pipeline, param_grid=param_grid,
-                                   scoring=make_scorer(rmse_scorer, greater_is_better=False), n_jobs=-1, cv=5)
-
-        logger.info("Training Linear Regression model")
+                                   scoring=make_scorer(rmse_scorer, greater_is_better=False), n_jobs=-1, cv=5,
+                                   verbose=3)
+        logger.info("Training Gradient Boosting Regression model")
         grid_search.fit(X_train, y_train)
 
         return grid_search
