@@ -65,7 +65,9 @@ if __name__ == '__main__':
     model_name = "SupportVectorRegression_v1.0"
     log_experiment(model_name, "Model with outliers capped using iqr", metrics)
 
-    model_save_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), f"../models/{model_name}.pkl")
-    os.makedirs(os.path.dirname(model_save_path), exist_ok=True)
+    models_dir_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../models")
+    os.makedirs(models_dir_path, exist_ok=True)
     # Save the best pipeline to a file
-    joblib.dump(grid_search.best_estimator_, model_save_path)
+    joblib.dump(grid_search.best_estimator_, os.path.join(models_dir_path, f"{model_name}.pkl"))
+    # Save the scaler to a file
+    joblib.dump(scaler, os.path.join(models_dir_path, f"scaler.pkl"))
